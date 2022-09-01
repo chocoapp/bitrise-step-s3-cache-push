@@ -110,8 +110,7 @@ inputs:
     opts:
       title: Cache key
       summary: The key that will be used on S3 as the file key. This is used to retrieve the cache with s3-cache-pull.
-      description: |
-        The cache key is a string for the cache file key
+      description: The cache key is a string for the cache file key
       category: Cache
       is_expand: true
       is_required: true
