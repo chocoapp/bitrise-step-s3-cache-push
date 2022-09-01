@@ -17,10 +17,4 @@ Input|Description
 
 #### Cache Key
 
-The cache key can contain special values for convenience.
-
-Value|Description
--|-
-`{{ branch }}`|The current branch being built. It will use the `$BITRISE_GIT_BRANCH` environment var.
-`{{ checksum "path/to/file" }}`|A SHA256 hash of the given file's contents. Good candidates are dependency manifests, such as `Gemfile.lock`, `Carthage.resolved`, and `Mintfile`.
-`{{ stackrev }}`|The machine's stack id. It will use th `$BITRISE_OSX_STACK_REV_ID` environment var.
+The cache key
