@@ -3,7 +3,7 @@ title: |-
 summary: |
   Store your derived data in a s3 bucket with custom keys.
 description: |
-  A step to store your cache in a s3 bucket using custom keys.
+  A step to store your derived data in a s3 bucket using custom keys.
 
   This should be used with the s3-cache-pull step to retrieve the cache.
 
