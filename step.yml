@@ -111,15 +111,9 @@ inputs:
       title: Cache key
       summary: The key that will be used on S3 as the file key. This is used to retrieve the cache with s3-cache-pull.
       description: |
-        The cache key can contain special values for convenience.
-
-        You can use '{{ checksum path/to/file }}' to get the file content's sha256 checksum.
-        You can use '{{ branch }}' to get the name of the current branch.
-        You can use '{{ stackrev }}' to get the machine's stack id.
-
-        E.g.: key: {{ stackrev }}-carthage-{{ branch }}-{{ checksum "Cartfile.resolved" }}
+        The cache key is a string for the cache file key
       category: Cache
-      is_expand: false
+      is_expand: true
       is_required: true
 
   - cache_path:
@@ -132,5 +126,5 @@ inputs:
         For instance, if you cache `/path/to/my/folder`, only "folder" will be compressed.
         When retrieving the cache with s3-cache-pull, you will have to use `/path/to/my/` to extract the folder there.
       category: Cache
-      is_expand: false
+      is_expand: true
       is_required: true
