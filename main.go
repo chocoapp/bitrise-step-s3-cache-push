@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/alephao/cacheutil"
 	"github.com/mholt/archiver"
 )
 
@@ -35,7 +34,7 @@ func main() {
 			awsSecretAccessKey,
 			bucketName,
 		)
-		
+
 		log.Printf("Checking if cache exists for key '%s'\n", cacheKey)
 		cacheExists := s3.CacheExists(cacheKey)
 
@@ -47,7 +46,7 @@ func main() {
 		log.Println("Cache not found, trying to compress the folder.")
 
 		outputPath := fmt.Sprintf("%s/%s.zip", tempFolderPath, cacheKey)
-		err = archiver.Archive([]string{cachePath}, outputPath)
+		err := archiver.Archive([]string{cachePath}, outputPath)
 
 		if err != nil {
 			log.Printf("Failed to compress '%s'\n", cachePath)
