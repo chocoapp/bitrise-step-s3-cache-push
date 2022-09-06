@@ -1,11 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
-
-	"github.com/mholt/archiver"
 )
 
 const (
@@ -25,54 +22,34 @@ func main() {
 	cacheKey := GetEnvOrExit(CACHE_KEY)
 	cachePath := GetEnvOrExit(CACHE_PATH)
 
-	failed := false
+	s3 := NewAwsS3(
+		awsRegion,
+		awsAccessKeyId,
+		awsSecretAccessKey,
+		bucketName,
+	)
 
-	CreateTempFolder(func(tempFolderPath string) {
-		s3 := NewAwsS3(
-			awsRegion,
-			awsAccessKeyId,
-			awsSecretAccessKey,
-			bucketName,
-		)
+	log.Printf("Checking if cache exists for key '%s'\n", cacheKey)
+	cacheExists := s3.CacheExists(cacheKey)
 
-		log.Printf("Checking if cache exists for key '%s'\n", cacheKey)
-		cacheExists := s3.CacheExists(cacheKey)
-
-		if cacheExists {
-			log.Println("Cache found! Skiping...")
-			return
-		}
-
-		log.Println("Cache not found, trying to compress the folder.")
-
-		outputPath := fmt.Sprintf("%s/%s.zip", tempFolderPath, cacheKey)
-		err := archiver.Archive([]string{cachePath}, outputPath)
-
-		if err != nil {
-			log.Printf("Failed to compress '%s'\n", cachePath)
-			log.Printf("Error: %s\n", err.Error())
-			failed = true
-			return
-		}
-
-		log.Println("Compression was successful, trying to upload to aws.")
-
-		err = s3.UploadToAws(
-			cacheKey,
-			outputPath,
-		)
-
-		if err != nil {
-			log.Printf("Failed to upload! Failing gracefully. Error: %s\n", err)
-			return
-		}
-
-		log.Println("Upload was successful!")
-	})
-
-	if failed {
-		os.Exit(1)
+	if cacheExists {
+		log.Println("Cache found! Skiping...")
+		return
 	}
+
+	log.Println("Cache not found, trying to upload the folder.")
+
+	err := s3.UploadToAws(
+		cacheKey,
+		cachePath,
+	)
+
+	if err != nil {
+		log.Printf("Failed to upload! Failing gracefully. Error: %s\n", err)
+		return
+	}
+
+	log.Println("Upload was successful!")
 
 	os.Exit(0)
 }

@@ -120,10 +120,7 @@ inputs:
       title: Cache path
       summary: Path to file or directory to be cached. Relative to the root of the git repo.
       description: |
-        The entire folder will be compressed before sending to the S3 bucket
-
-        For instance, if you cache `/path/to/my/folder`, only "folder" will be compressed.
-        When retrieving the cache with s3-cache-pull, you will have to use `/path/to/my/` to extract the folder there.
+        The compressed folder you will be sending to the S3 bucket
       category: Cache
       is_expand: true
       is_required: true
